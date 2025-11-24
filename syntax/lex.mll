@@ -13,7 +13,7 @@ rule token = parse
     { PLUS }
 | "print"
     { PRINT }
-| ['0'-'9' '.' 'e']+ as i
+| ['0'-'9' '.' 'e' '-']+ as i
     { NUMBER (float_of_string i) }
 | eof
     { EOF }
