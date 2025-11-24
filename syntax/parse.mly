@@ -29,22 +29,32 @@ main:
   { [] }
 
 stmt:
-| PRINT e = expr1
+| PRINT e = expr4
   { Print e }
-| n = VARNAME EQ e = expr1
+| n = VARNAME EQ e = expr4
   { Assign (n, e) }
 
-expr1:
-| e1 = expr1 PLUS e2 = expr0
+
+expr4:
+| e1 = expr4 PLUS e2 = expr3
   { Plus (e1, e2) }
-| e1 = expr1 MUL e2 = expr0
-  { Times (e1, e2) }
-| e1 = expr1 SUB e2 = expr0
+| e1 = expr4 SUB e2 = expr3
   { Minus (e1, e2) }
-| e1 = expr1 DIV e2 = expr0
+| e = expr3 { e }
+
+expr3:
+| e1 = expr3 MUL e2 = expr2
+  { Times (e1, e2) }
+| e1 = expr3 DIV e2 = expr2
   { Divide (e1, e2) }
-| e1 = expr0 EXP e2 = expr1
-  { Exp (e1, e2)}
+| e = expr2 { e }
+
+expr2:
+| e1 = expr1 EXP e2 = expr2
+  { Exp (e1, e2) }
+| e = expr1 { e }
+
+expr1:
 | LOG e1 = expr0
   { Log e1 }
 | SIN e1 = expr0
@@ -56,6 +66,7 @@ expr1:
 | SUB e = expr0
   { Negate e }
 | e = expr0 { e }
+
 
 expr0:
 | n = NUMBER
